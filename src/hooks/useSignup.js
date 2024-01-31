@@ -51,6 +51,7 @@ export default function useSignup() {
       return usr;
     } catch (error) {
       setError(error.message);
+      setLoading(false);
     }
 
     // Right
