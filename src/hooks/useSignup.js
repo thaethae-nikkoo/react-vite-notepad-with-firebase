@@ -8,7 +8,7 @@ import { auth, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export default function useSignup() {
-  let [error, setError] = useState(null);
+  let [error, setError] = useState("");
   let [loading, setLoading] = useState(false);
   let uploadToFirebase = async (file) => {
     let uniqueFileName = Date.now().toString() + "_" + file.name;
@@ -21,7 +21,7 @@ export default function useSignup() {
   };
 
   const sendVerificationEmail = async () => {
-    const user = auth.currentUser;
+    const user = auth?.currentUser;
     await sendEmailVerification(user)
       .then(() => {
         setError("Verification email sent. Please check your inbox.");
@@ -45,12 +45,12 @@ export default function useSignup() {
         photoURL: avatar_url,
       });
 
-      setError(null);
+      setError("");
       setLoading(false);
 
       return usr;
     } catch (error) {
-      setError(error);
+      setError(error.message);
     }
 
     // Right

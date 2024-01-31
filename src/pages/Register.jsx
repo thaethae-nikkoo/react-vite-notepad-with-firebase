@@ -17,6 +17,7 @@ export default function Register() {
   let registerUser = async (e) => {
     e.preventDefault();
 
+
     let user = await signup(email, password, username, file);
     if (user) {
       navigate("/");

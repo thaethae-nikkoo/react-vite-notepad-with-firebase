@@ -47,7 +47,7 @@ export default function useFirestore() {
       if (selectedMonth && selectedYear) {
         const startOfMonth = new Date(selectedYear, selectedMonth - 1, 1);
         const endOfMonth = new Date(selectedYear, selectedMonth, 1);
-        console.log(startOfMonth);
+
         queries.push(
           where("created_at", ">=", startOfMonth),
           where("created_at", "<=", endOfMonth),

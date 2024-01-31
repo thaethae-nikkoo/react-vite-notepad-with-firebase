@@ -19,7 +19,6 @@ export default function Home() {
     setSearch(search);
   };
 
-
   let allNoteShow = () => {
     setFilterFavorites(null);
     setSearch("");

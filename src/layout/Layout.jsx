@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 import Navbar from "../components/Navbar";
 import "./style.css";
@@ -12,7 +12,7 @@ import PasswordChangeDialog from "../components/PasswordChangeDialog";
 import ChangeEmailDialogbox from "../components/changeEmailDialogbox";
 import DeleteAccountModal from "../components/DeleteAccountModal";
 
-function Layout({ photoExist }) {
+function Layout() {
   let location = useLocation();
   let { isDark } = useTheme();
   let [showDialog, setShowDialog] = useState(false);
@@ -65,11 +65,7 @@ function Layout({ photoExist }) {
         <DeleteAccountModal setDeleteAccount={setDeleteAccount} />
       )}
 
-      <Navbar
-        setShowDialog={setShowDialog}
-        photoExist={photoExist}
-        setProfileInfo={setProfileInfo}
-      />
+      <Navbar setShowDialog={setShowDialog} setProfileInfo={setProfileInfo} />
 
       <SwitchTransition>
         <CSSTransition timeout={200} classNames="fade" key={location.pathname}>
