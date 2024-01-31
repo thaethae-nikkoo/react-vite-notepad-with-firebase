@@ -162,8 +162,7 @@ export default function NotFound() {
           <p className="md:text-lg lg:text-xl text-black mt-8">
             Sorry, the page you are looking for could not be found.
           </p>
-          <a
-            href="#"
+          <div
             className="flex items-center space-x-2 bg-primary hover:underline text-gray-100 px-4 py-2 mt-12 rounded transition duration-150"
             title="Return Home"
           >
@@ -183,7 +182,7 @@ export default function NotFound() {
               {" "}
               <span>Return Home</span>
             </Link>
-          </a>
+          </div>
         </div>
       </div>
     </>

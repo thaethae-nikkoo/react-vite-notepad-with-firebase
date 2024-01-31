@@ -12,10 +12,14 @@ import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import Profile from "../components/Profile";
+import PasswordReset from "../pages/PasswordReset";
 
 export default function index() {
   let { authReady, user } = useContext(AuthContext);
   let isAuthenticated = !!user;
+  // let photoExist = !!photo;
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -49,8 +53,17 @@ export default function index() {
           path: "/login",
           element: !isAuthenticated ? <Login /> : <Navigate to="/" />,
         },
+        {
+          path: "/profile",
+          element: isAuthenticated ? <Profile /> : <Navigate to="/login" />,
+        },
+        {
+          path: "/password-reset",
+          element: !isAuthenticated ? <PasswordReset /> : <Navigate to="/" />,
+        },
       ],
     },
+
     {
       path: "*",
       element: <NotFound />,

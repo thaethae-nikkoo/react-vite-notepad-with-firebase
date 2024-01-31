@@ -1,13 +1,16 @@
 import darkIcon from "../assets/dark.svg";
 import lightIcon from "../assets/light.svg";
 import notePad from "../assets/pad.png";
+import GridIcon from "../assets/gridIcon.svg";
+import ListIcon from "../assets/listIcon.svg";
 
 import { Link, useNavigate } from "react-router-dom";
 
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import useTheme from "../hooks/useTheme";
+import useView from "../hooks/useView";
 import useSignOut from "../hooks/useSignOut";
 
 import { AuthContext } from "../contexts/AuthContext";
@@ -15,11 +18,13 @@ import { AuthContext } from "../contexts/AuthContext";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-export default function Navbar() {
+export default function Navbar({ setShowDialog, setProfileInfo, photoExist }) {
   let { logOut } = useSignOut();
 
   let navigate = useNavigate();
   let { changeTheme, isDark } = useTheme();
+  let { changeView, isList } = useView();
+
   let logoutUser = async (e) => {
     e.preventDefault();
     await logOut();
@@ -29,7 +34,7 @@ export default function Navbar() {
 
   let { user } = useContext(AuthContext);
 
-  console.log("navbar user :", user);
+  // console.log("navbar user :", user);
 
   return (
     <>
@@ -83,7 +88,7 @@ export default function Navbar() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items
-                      className={`absolute right-0 z-10 mt-2 w-[290px] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
+                      className={`absolute right-[-50px] md:right-0 z-10 mt-2 w-[350px] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
                         isDark ? "bg-cardbg" : "bg-white"
                       }`}
                     >
@@ -91,16 +96,41 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <p
-                              href="#"
+                              onClick={() => setProfileInfo(true)}
                               className={classNames(
                                 active ? "bg-slate-100" : "text-gray-700",
                                 "block px-3 py-2 text-sm",
                                 isDark && !active ? "text-white" : "text-black"
                               )}
                             >
-                              <i className="bi bi-person-circle"></i>{" "}
+                              {user.email}{" "}
+                              {!user.emailVerified && (
+                                <span className="rounded-lg text-xs text-white px-2 bg-red-600">
+                                  Unverified
+                                </span>
+                              )}
+                              {user.emailVerified && (
+                                <span className="rounded-lg text-xs text-white px-2 bg-primary">
+                                  Verified
+                                </span>
+                              )}
+                            </p>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <p
+                              onClick={() => setProfileInfo(true)}
+                              className={classNames(
+                                active ? "bg-slate-100" : "text-gray-700",
+                                "block px-3 py-2 text-sm",
+                                isDark && !active ? "text-white" : "text-black"
+                              )}
+                            >
+                              <i className="bi bi-person-square"></i>{" "}
                               &nbsp;&nbsp;
-                              {user.displayName}
+                              {/* {user.displayName} */}
+                              Profile
                             </p>
                           )}
                         </Menu.Item>
@@ -108,7 +138,23 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <p
-                              href="#"
+                              // to="/profile"
+                              onClick={() => setShowDialog(true)}
+                              className={classNames(
+                                active ? "bg-slate-100" : "text-gray-700",
+                                "block px-3 py-2 text-sm",
+                                isDark && !active ? "text-white" : "text-black"
+                              )}
+                            >
+                              <i className="bi bi-person-gear"></i> &nbsp;&nbsp;
+                              Account Settings
+                            </p>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <p
                               onClick={(e) => logoutUser(e)}
                               className={classNames(
                                 active ? "bg-slate-100" : "text-gray-700",
@@ -151,6 +197,33 @@ export default function Navbar() {
                   alt=""
                   className="w-7 cursor-pointer "
                   onClick={() => changeTheme("light")}
+                />
+              )}
+            </div>
+
+            <div
+              className={`md:flex hidden justify-center space-x-8 p-2  border-zinc-400 rounded-full items-center ${
+                isDark ? "border " : "shadow-lg "
+              }`}
+            >
+              {/* <span className="text-2xl">Logout</span> */}
+
+              {isList && (
+                <img
+                  src={GridIcon}
+                  alt=""
+                  className="w-6 cursor-pointer "
+                  id="dropdownDefaultButton"
+                  data-dropdown-toggle="dropdown"
+                  onClick={() => changeView("grid")}
+                />
+              )}
+              {!isList && (
+                <img
+                  src={ListIcon}
+                  alt=""
+                  className="w-7 cursor-pointer "
+                  onClick={() => changeView("list")}
                 />
               )}
             </div>

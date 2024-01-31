@@ -1,26 +1,40 @@
-import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
+import {
+  fetchSignInMethodsForEmail,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import useTheme from "../hooks/useTheme";
 import { useState } from "react";
-import useLogin from "../hooks/useLogin";
+import { auth } from "../firebase";
+import { Link } from "react-router-dom";
 
-export default function Login() {
+export default function PasswordReset() {
   let { isDark } = useTheme();
   let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let { error, loading, login } = useLogin();
-  let navigate = useNavigate();
-  let loginUser = async (e) => {
-    e.preventDefault();
-    let user = await login(email, password);
+  let [resetSent, setResetSent] = useState(false);
+  let [loading, setLoading] = useState(false);
+  let [error, setError] = useState(null);
 
-    if (user) {
-      navigate("/");
-    }
+  //   Right Res
+  let passwordResetHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await sendPasswordResetEmail(auth, email)
+      .then((response) => {
+        console.log(response);
+        setResetSent("Password reset email sent. Check your inbox.");
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+
+    setLoading(false);
   };
+
   return (
     <>
       <div
-        className={`w-full max-w-lg shadow-lg p-8 d-bock m-auto mt-7 ${
+        className={`w-full max-w-lg shadow-lg p-8 d-bock m-auto mt-10 ${
           isDark ? "bg-cardbg border-gray-400" : " bg-white  shadow-zinc-500/50"
         }`}
       >
@@ -29,11 +43,19 @@ export default function Login() {
             isDark ? "text-white" : "text-primary"
           }`}
         >
-          Login
+          Password Reset
         </h1>
+
+        {resetSent && (
+          <p className="text-primary text-center mt-3">
+            Password reset email sent. Check your inbox.
+          </p>
+        )}
+        {error && <p className="text-red-600 text-center my-3">{error}</p>}
+
         <form
-          className="rounded px-8 pt-6 pb-8 mb-4"
-          onSubmit={(e) => loginUser(e)}
+          className="rounded px-8 pt-6 pb-8 "
+          onSubmit={passwordResetHandler}
         >
           <div className="mb-4">
             <label
@@ -42,51 +64,27 @@ export default function Login() {
               }`}
               htmlFor="email"
             >
-              Email
+              Enter your email for the reset link.
             </label>
             <input
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline ${
+              className={`shadow appearance-none border rounded w-full py-2 px-3 mb-2 text-gray-700  leading-tight focus:outline-none focus:shadow-outline ${
                 isDark ? "!bg-transparent border-gray-400" : "bg-white"
               }`}
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email."
+              placeholder="Email"
+              required
             />
+            <span className="text-sm my-2 text-gray-500">
+              To received reset link, please provide a registered email address.
+            </span>
           </div>
-          <div className="mb-6">
-            <label
-              className={`block  text-sm font-bold mb-2 ${
-                isDark ? "text-white" : "text-gray-700"
-              }`}
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline ${
-                isDark ? "!bg-transparent border-gray-400" : "bg-white"
-              }`}
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password."
-            />
-            {!!error && <p className="text-red-500 text-xs italic">{error}</p>}
-            <Link
-              to={"/password-reset"}
-              className={`text-sm text-start cursor-pointer ${
-                isDark ? "text-white" : "text-primary "
-              }`}
-            >
-              Forgot Password ?{" "}
-            </Link>
-          </div>
-          <div className="flex items-center justify-between">
+
+          <div className="flex  items-center justify-start space-x-4">
             <button
-              className="bg-primary flex justify-center items-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-primary mt-2 flex justify-center items-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
               {loading && (
@@ -111,20 +109,18 @@ export default function Login() {
                   ></path>
                 </svg>
               )}
-              Login
+              Send
             </button>
           </div>
         </form>
-
         <p
           className={`text-sm text-center ${
             isDark ? "text-white" : "text-primary "
           }`}
         >
-          Does not have account ?{" "}
           <span className="underline decoration-solid">
             {" "}
-            <Link to="/register"> Go Register</Link>{" "}
+            <Link to="/login"> Back to Login</Link>{" "}
           </span>
         </p>
       </div>

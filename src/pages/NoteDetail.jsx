@@ -39,15 +39,8 @@ export default function NoteDetail() {
             isDark ? "bg-cardbg border-2 shadow-xl  border-slate-500" : ""
           }`}
         >
-          <h2
-            className={`text-xl tracking-wide font-bold ${
-              isDark ? "text-white" : ""
-            }`}
-          >
-            {note.title}
-          </h2>
           <p
-            className={`text-md px-10 tracking-wide  ${
+            className={`text-lg  tracking-wide  ${
               isDark ? "text-gray-300" : ""
             }`}
           >

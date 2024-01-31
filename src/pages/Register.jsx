@@ -18,7 +18,6 @@ export default function Register() {
     e.preventDefault();
 
     let user = await signup(email, password, username, file);
-
     if (user) {
       navigate("/");
     }
@@ -68,11 +67,12 @@ export default function Register() {
               Username
             </label>
             <input
-              className={` appearance-none !border !border-gray-200 !shadow-md !bg-white  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none${
+              className={` appearance-none !border !border-gray-400 !shadow-md !bg-transparent  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none${
                 isDark ? "!bg-transparent border-gray-400" : "bg-white"
               }`}
               id="username"
               type="text"
+              required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username."
@@ -91,6 +91,7 @@ export default function Register() {
               className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline ${
                 isDark ? "!bg-transparent border-gray-400" : "bg-white"
               }`}
+              required
               id="avatar"
               type="file"
               onChange={handleAvatarChange}
@@ -110,6 +111,7 @@ export default function Register() {
               className={`block  text-sm font-bold mb-2 ${
                 isDark ? "text-white" : "text-gray-700"
               }`}
+              required
               htmlFor="email"
             >
               Email
@@ -120,6 +122,7 @@ export default function Register() {
               }`}
               id="email"
               type="email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email."
@@ -140,11 +143,17 @@ export default function Register() {
               }`}
               id="password"
               value={password}
+              required
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="Enter your password."
             />
-            {!!error && <p className="text-red-500 text-xs italic">{error}</p>}
+
+            <div className="mb-6">
+              {!!error && (
+                <p className="text-red-500 text-xs italic">{error}</p>
+              )}
+            </div>
           </div>
           <div className="flex items-center justify-between">
             <button
