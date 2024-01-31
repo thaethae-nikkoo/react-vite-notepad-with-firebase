@@ -17,7 +17,7 @@ export default function NotesList({
   const selectedYear = selectedDate.split("-")[0]; // Extract year from selectedDate
 
   let { getCollection } = useFirestore();
-  let { isDark } = useContext(AuthContext);
+
   let { isList } = useView();
 
   const {
@@ -49,7 +49,7 @@ export default function NotesList({
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
-  const notesPerPage = isList ? 5 : 9;
+  const notesPerPage = 9;
 
   const indexOfLastNote = currentPage * notesPerPage;
   const indexOfFirstNote = indexOfLastNote - notesPerPage;
@@ -79,12 +79,15 @@ export default function NotesList({
     );
   };
 
+  if (error) {
+    return <p className="text-center my-3">{error}</p>;
+  }
+
   return (
     <>
-      {error && <p className={`text-center text-primary my-3 `}>{error}</p>}
       {loading && <p className="text-center">Loading notes.....</p>}
 
-      {!loading && !error && (
+      {!loading && (
         <div>
           {!filterFavorites && !search && !selectedDate && (
             <p className="text-center text-primary">
@@ -119,6 +122,7 @@ export default function NotesList({
               key={note.id}
               note={{
                 ...note,
+
                 note: search
                   ? highlightSearch(
                       note.note.length > 130
@@ -132,6 +136,25 @@ export default function NotesList({
               setdeleteNoteId={setdeleteNoteId}
             />
           ))}
+        {/* {!!notes &&
+          notes.map((note) => (
+            <NoteCard
+              key={note.id}
+              note={{
+                ...note,
+                note: search
+                  ? highlightSearch(
+                      note.note.length > 130
+                        ? note.note.substring(0, 130)
+                        : note.note,
+                      search
+                    )
+                  : note.note,
+              }}
+              setShowModal={setShowModal}
+              setdeleteNoteId={setdeleteNoteId}
+            />
+          ))} */}
       </div>
       <Pagination
         totalPages={totalPages}

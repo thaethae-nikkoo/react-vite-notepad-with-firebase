@@ -1,14 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import useTheme from "../hooks/useTheme";
 import useView from "../hooks/useView";
-import { Menu } from "@headlessui/react";
+// import { Menu } from "@headlessui/react";
 import useFirestore from "../hooks/useFirestore.js";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/index.js";
-import moment from "moment/moment.js";
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+
+// function classNames(...classes) {
+//   return classes.filter(Boolean).join(" ");
+// }
 export default function NoteCard({ note, setShowModal, setdeleteNoteId }) {
   let { updateDocument } = useFirestore();
   let deleteHandler = (e, deleteNoteId) => {
@@ -204,7 +204,7 @@ export default function NoteCard({ note, setShowModal, setdeleteNoteId }) {
 
           <div
             className={`overflow-hidden  px-6 lg:px-8 ${
-              isList ? "md:max-h-[70px] max-h-[160px]" : " min-h-[130px]"
+              isList ? "md:max-h-[70px] max-h-[160px]" : " min-h-[163px]"
             }`}
           >
             <div
@@ -216,23 +216,23 @@ export default function NoteCard({ note, setShowModal, setdeleteNoteId }) {
             >
               <div>
                 <p
-                  className={`my-2 text-md ${
+                  className={`  my-2 text-md ${
                     isList ? "mx-5 px-4" : ""
                   } leading-8 md:min-h-[10px] ${
-                    isDark ? "text-white" : "text-secondary"
+                    isDark ? "text-white" : "text-dark"
                   }`}
                 >
                   <span
                     className="hidden sm:inline-block"
                     dangerouslySetInnerHTML={{
-                      __html: note.note?.substring(0, 60) + "...",
+                      __html: note.note?.substring(0, 130) + "...",
                     }}
                   />
 
                   <span
                     className="inline-block sm:hidden"
                     dangerouslySetInnerHTML={{
-                      __html: note.note?.substring(0, 30) + "...",
+                      __html: note.note?.substring(0, 130) + "...",
                     }}
                   />
                   {/* {note.note?.substring(0, 100) + "..."} */}
