@@ -51,14 +51,12 @@ export default function DeleteAccountModal({ setDeleteAccount }) {
             await deleteDoc(ref);
           });
         }
-
         if (photoURL) {
           const storageRef = ref(storage, photoURL);
           if (storageRef) {
             await deleteObject(storageRef);
           }
         }
-
         await deleteUser(user);
 
         setDeleteAccount(false);

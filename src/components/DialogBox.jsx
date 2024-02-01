@@ -65,7 +65,7 @@ export default function DialogBox({
                         }`}
                         id="modal-title"
                       >
-                        Profile Settings
+                        Account Settings
                       </h3>
                     </div>
                   </div>
